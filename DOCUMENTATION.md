@@ -113,7 +113,7 @@ The HUD connects and disconnects widget event bindings when it is refreshed or r
 
 ### Choose the drawing method
 
-Use **Setup > Placement** to edit the active settings' **Interaction** values, or disable **Use Project Settings** on a controller Blueprint and edit its local **Interaction** values.
+Use **Setup > Edit Placement** to edit the active settings' **Interaction** values, or disable **Use Project Settings** on a controller Blueprint and edit its local **Interaction** values.
 
 | Tool | Choices | What the second point controls |
 |---|---|---|
@@ -515,7 +515,7 @@ Storage alternates two checksummed copies through Unreal's platform save system 
 
 Select **Beam**, press at a grid edge, drag to preview a straight run, then release to build it. The run follows the dominant horizontal or vertical direction; occupied beam edges are reused when extending or patching a run. Escape cancels, and one Undo removes the entire new run. Beams can share edges with walls, doors and windows without replacing them.
 
-In **Project defaults > Interface > Interaction > Drawing**, **Beam Gesture** selects drag/release or click start/click end independently of the other tools. Custom input can use **Begin Placement Gesture**, **Update Placement Gesture** and **Complete Placement Gesture**; previews do not change saved records.
+In **Project defaults > Interaction > Drawing**, **Beam Gesture** selects drag/release or click start/click end independently of the other tools. Custom input can use **Begin Placement Gesture**, **Update Placement Gesture** and **Complete Placement Gesture**; previews do not change saved records.
 
 In the catalog's **Beam** section, **Beam Elevation** is the underside height above the active floor. The default **-1** follows the component's Floor Height; **0** rests on that floor. **Beam Depth** and **Beam Thickness** set the cross section in centimeters. Native geometry, custom mesh sizing, hit targets and optional world-obstacle checks share these dimensions. Length follows Grid Size. The authoring preview uses project Floor Height for the -1 setting.
 

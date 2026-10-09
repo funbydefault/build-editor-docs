@@ -17,6 +17,7 @@
 - [Automatic draft recovery](#automatic-draft-recovery)
 - [Furniture and support surfaces](#furniture-and-support-surfaces)
 - [Roofs and camera](#roofs-and-building-views)
+- [Walking visitor customization](#customize-the-walking-visitor)
 - [Included top-down camera](#included-top-down-camera)
 - [Performance and edit reliability](#performance-and-edit-reliability)
 - [Reusable profiles and scene settings](#reusable-build-profiles-and-scene-settings)
@@ -407,7 +408,7 @@ The supplied controller's `BeginPaint`, `ApplyPaintFinish`, `SetRoomPaintWalls`,
 
 The toolbar separates floor/view controls from undo and saved-build actions. The bottom catalog has **Build** and **Furnish** tabs, shape and group filters, search, room/edit/finish tools and swatches. The angle appears briefly beside the placement preview while you turn an item; stair guidance also shows rise, run and width.
 
-**View mode** retains orbit, pan and zoom while hiding editing tools. Point at a visible door or window and press **E** to operate it from the orbit view. **Walk** or `F3` switches to the original clothed visitor, starting beside a clear exterior entrance or on a clear managed floor. Full walls and roofs remain visible while walking. The visitor's capsule collides with walls, furniture and closed doors, and its follow camera retracts around obstacles. Returning to View restores the existing orbit camera and its previous wall visibility.
+**View mode** retains orbit, pan and zoom while hiding editing tools. Point at a visible door or window and press **E** to operate it from the orbit view. **Walk** or `F3` switches to the supplied animated mannequin, starting beside a clear exterior entrance or on a clear managed floor. Full walls and roofs remain visible while walking. The visitor's capsule collides with walls, furniture and closed doors, and its follow camera retracts around obstacles. Returning to View restores the existing orbit camera and its previous wall visibility.
 
 While walking, **WASD / arrows** or the gamepad's **left stick** move relative to the camera. **Shift / left stick press** moves faster. **Right-drag / right stick** looks; the wheel adjusts the follow distance. Face a nearby door or window and press **E / gamepad A / Open-close** to operate it. **Escape / gamepad B / View mode** returns to the orbit camera; **Build mode** returns to editing. The gamepad's **Menu** button also switches walking.
 
@@ -459,11 +460,11 @@ For a replacement UMG field, call the HUD's **Request Interface Text Entry** nod
 
 ## Package your game
 
-The editor module automatically retains the native default catalog art and basic shapes during cooking, including when the showcase map is not cooked. You do not need to add `/BuildEditor/Materials` or `/Engine/BasicShapes` as cook directories for those defaults.
+The editor module automatically retains the native default catalog art, basic shapes and supplied visitor mesh, idle animation and locomotion Blend Space during cooking, including when the showcase map is not cooked. You do not need to add `/BuildEditor/Materials` or `/Engine/BasicShapes` as cook directories for those defaults.
 
-It also retains the catalog, camera pawn class, complete interface class, theme and four section widget classes assigned in project **Build Editor** settings. The configured **Default Profile** and references in its owned settings and assigned theme are included; nested Default Profiles are unsupported. Cooked catalogs/themes/levels then retain their referenced assets through Unreal's dependency collection.
+It also retains the catalog, camera pawn class, visitor class and appearance overrides, complete interface class, theme and four section widget classes assigned in project **Build Editor** settings. The configured **Default Profile** and references in its owned settings and assigned theme are included; nested Default Profiles are unsupported. Cooked catalogs/themes/levels then retain their referenced assets through Unreal's dependency collection.
 
-Catalogs, themes or classes selected only dynamically at runtime still need your normal asset management rules, such as an **Always Cook** Primary Asset Label or explicit cook directories. Check a packaged game after changing the catalog or interface; a successful C++ build does not verify cooked asset availability.
+Catalogs, themes or classes selected only dynamically at runtime still need your normal asset management rules, such as an **Always Cook** Primary Asset Label or explicit cook directories. Check a packaged game after changing the catalog, interface or visitor; a successful C++ build does not verify cooked asset availability.
 
 ## Schematic saves
 
@@ -546,6 +547,18 @@ Exterior shows roofs and full walls. Walls up keeps all walls at full height whi
 Hold the right mouse button and drag horizontally to orbit or vertically to tilt. Use the wheel to zoom and middle-drag or WASD/arrows to pan. These controls work in both Build and View. **Walk / F3** switches to a visitor with a collision-aware third-person camera; leaving walking restores the orbit view. The active floor sets the orbit target height; the built-in camera's safety limit keeps it at least 120 cm above that floor, even at shallow tilt and minimum zoom. Camera sensitivity and zoom/tilt limits are configurable in project settings.
 
 The supplied controller uses `CaptureDuringMouseDown` with Game and UI input. UE 5.4's game viewport skips initial mouse-button presses when set to `NoCapture`; do not copy that mode into a host integration. During right drag, Game Only input captures camera motion; releasing restores the UI. Full-screen Slate layout containers use Self Hit Test Invisible, while interface panels and controls remain clickable. Use the supplied GameMode to enable this camera. The Unreal editor's level viewport has its own editor controls.
+
+### Customize the walking visitor
+
+The supplied visitor uses an animated skeletal mesh. You can replace its appearance in **Tools > Build Editor > Project defaults > Camera**, or select your active profile in **Profiles** and choose **Camera**. The fields appear under **Walkthrough**. Save the defaults or profile and start a new play session.
+
+1. Leave **Walkthrough Character Class** empty to use the supplied visitor. To supply a different character setup, create a Blueprint child of **Build Editor Walkthrough Character**, then assign that class here.
+2. Set **Walkthrough Mesh**, **Walkthrough Locomotion** and **Walkthrough Idle Animation** to change the native appearance. Empty fields keep the selected character class's defaults. Native clips must use the same skeleton asset as the effective mesh. The locomotion Blend Space's first axis is horizontal speed in centimeters per second.
+3. Enable **Override Walkthrough Mesh Transform** to adjust the mesh offset, rotation or positive scale. The supplied mannequin uses Z −88 cm, yaw −90 degrees and scale 1. These settings change the mesh, not the collision capsule.
+
+For an animation Blueprint, set **Visitor Animation Class** in your child character's **Class Defaults**. Its target skeleton must support the chosen mesh. It then controls the pose; the native locomotion and idle overrides are unused. Choose **Enable Post Process Animation** there only if your custom mesh requires it.
+
+Keep your character's collision capsule sized for its doorways and stair clearances. The supplied movement and follow camera remain available to child characters. To apply appearance changes during play, call **Refresh Appearance** and show **Out Message** when it fails; a rejected appearance leaves the current mesh and animation intact.
 
 ### Included top-down camera
 

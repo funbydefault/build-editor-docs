@@ -31,9 +31,13 @@ The quickstart starts with an installed plugin. Your game can remain a Blueprint
 1. Enable **Edit > Plugins > Build Editor**, restart Unreal if requested, then open **Tools > Build Editor > Setup**.
 2. For your own first level, choose **File > New Level > Basic** so lighting is already available. Keep its lights. If using the supplied grass ground, delete the template's **Floor** actor so it does not cover the grass. A completely Empty level needs your own lighting. Projects using Lumen software tracing must enable **Generate Mesh Distance Fields** in Project Settings and restart the editor after changing it.
 3. In **Setup**, choose **Use Build Editor GameMode**, then **Add / select grass ground**. Ground is optional when your project already supplies terrain. These actions are undoable; repeating them keeps the existing Build Editor GameMode or ground. Save the level, then press **Play**. The built-in catalog supplies a working palette immediately; creating a catalog is optional. The supplied controller, camera and HUD read the active settings at play start. Existing level pieces are adopted; no sample room is created automatically.
-4. To set the permitted lot, choose **Setup > Construction**. Enable **Use Build Area Bounds** and edit **Build Area Min Cell / Max Cell**, **Grid Size**, **Grid Origin** and **Floor Height** as needed. The source label identifies whether you are editing a level profile, project profile or inline defaults. Save a profile with **Save profile**; save inline values with **Save defaults**. Ground size is visual and does not change these bounds.
+4. To set the permitted lot, choose **Setup > Edit Construction**. Enable **Use Build Area Bounds** and edit **Build Area Min Cell / Max Cell**, **Grid Size**, **Grid Origin** and **Floor Height** as needed. The source label identifies whether you are editing a level profile, project profile or inline defaults. Save a profile with **Save profile**; save inline values with **Save defaults**. Ground size is visual and does not change these bounds.
 5. To customize the palette, choose **Decorations > New catalog**, select a project Content folder, and save the asset. It starts with the built-in architecture and furnishings. Select an item and edit its name, group, art, dimensions, footprint, support settings or Piece Class. Use **Add**, **Duplicate**, **Remove**, **Move up** and **Move down** to organize it.
 6. Run **Validation**, fix errors, and select **Save catalog**. Return to **Setup** and choose **Use open catalog**, then save the displayed settings source. **Ctrl+Z / Ctrl+Y** undo and redo catalog edits. **Ctrl+S** saves the catalog while Decorations has focus. Play again to try your changes.
+
+![Setup page with GameMode, grass ground, catalog and settings actions](setup.png)
+
+*Setup brings the level, catalog and settings actions together.*
 
 > [!IMPORTANT]
 > Change **Name** to rename an item safely. Its stable **Id** is stored in schematics. Changing or removing an ID can make existing saved builds unavailable. The window asks before changing an ID or removing an item.
@@ -78,6 +82,10 @@ The supplied interface is optional. Its appearance and gesture policies are inde
 4. To change the supplied interface during play, modify the HUD's local values with **Use Project Settings** disabled, then call **Refresh Interface**. Opted-in HUDs reread project settings. Refresh cancels an unfinished gesture and closes dialogs before rebuilding; placed pieces and saved designs are preserved.
 
 Themes are loaded when the interface is created. References assigned in project Build Editor settings, including the Default Profile and its owned settings, are retained automatically during cooking. References stored in cooked levels and assets follow Unreal's asset dependencies. Themes or widget classes chosen only dynamically still need your project's asset management rules, such as an **Always Cook** Primary Asset Label. Test the actual packaged game after changing these references.
+
+![Interface page with settings source buttons, theme inspector and appearance preview](interface.png)
+
+*Choose the settings source, edit its appearance and check the preview before saving.*
 
 ### Replace one section with UMG
 
@@ -312,9 +320,13 @@ Room actions, item editing and painting have separate headings. The upper toolba
 
 ### Catalog setup
 
-The authoring window's **Setup** page connects a saved catalog to your project and links to defaults and validation. **Use open catalog for project** checks the catalog before assigning it; save project defaults to retain the assignment.
+The authoring window's **Setup** page connects a saved catalog to the active settings and links to configuration and validation. **Use open catalog** checks the catalog before assigning it. Save the displayed settings source to retain the assignment; this can be a level profile, project profile or inline defaults.
 
-Setup also shows the current recovery opt-in, interval and library namespace. Its room-editing notes explain rectangular resizing and the host validation/change-event hooks. Use the existing **Configure project defaults** action to edit those values in the searchable inspector, then **Save defaults**.
+Setup also shows the current recovery interval and library name. Choose **Edit Controls** for input and saved-build settings, **Edit Construction** for the grid and lot, or **Edit Placement** for snapping and gestures.
+
+![Decorations page with searchable catalog, selected item properties and a live wall preview](catalog.png)
+
+*Decorations keeps the item list, properties and preview in one window.*
 
 In **Decorations**, **Quick configure** offers Door, Window, Table / shelf and Tabletop prop presets for a single selected item. They replace placement dimensions, shape and support behavior while retaining stable IDs, names, groups, meshes, materials, finishes and custom piece classes. **Ctrl+Z** restores the prior definition. Review dimensions against your own meshes after applying a preset.
 

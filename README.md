@@ -2,11 +2,15 @@
 
 Build Editor adds in-game building and furnishing to Unreal Engine projects. Players can draw rooms, walls and floors, place doors and windows, connect levels with straight stairs, add roofs, and decorate with furniture.
 
-## Get started
+## Quick Start
 
-Read the [Build Editor 1.0 guide](DOCUMENTATION.md#editor-quickstart) for Unreal Engine 5.4 on Windows 64-bit. The supplied editor setup works with a Blueprint-only game; source installation requires Unreal's supported C++ build tools.
+Follow the [illustrated Quick Start](DOCUMENTATION.md#quick-start): enable the plugin, connect the supplied controls in **Tools > Build Editor > Setup**, then press **Play** and draw a room. Each step shows the actual editor control and expected result.
 
-- [Set up your own level](DOCUMENTATION.md#editor-quickstart)
+[![Build Editor Setup page with the main setup controls marked](quickstart-editor.png)](DOCUMENTATION.md#quick-start)
+
+The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools.
+
+- [Set up your own level](DOCUMENTATION.md#quick-start)
 - [Change the interface and placement controls](DOCUMENTATION.md#customize-the-interface-and-build-interactions)
 - [Create your own item catalog](DOCUMENTATION.md#make-a-catalog)
 - [Mouse, keyboard and gamepad controls](DOCUMENTATION.md#default-controls)

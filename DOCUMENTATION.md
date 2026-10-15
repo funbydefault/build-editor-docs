@@ -1,8 +1,61 @@
 # Build Editor 1.0 guide
 
+Unreal Engine 5.4 · Windows 64-bit
+
+<a id="editor-quickstart"></a>
+
+## Quick Start
+
+Start in your own project with the matching Build Editor package installed. The supplied setup works in a Blueprint-only game.
+
+> [!NOTE]
+> A source-only installation needs Unreal's supported C++ build tools to compile the plugin. You do not need to write game C++ for the steps below.
+
+1. **Enable the plugin.** Open **Edit > Plugins**, search for **Build Editor**, and enable its checkbox. Restart Unreal if requested.
+
+   ![Plugins browser: search for Build Editor and enable its checkbox](quickstart-enable.png)
+
+2. **Create a lit level.** Choose **File > New Level > Basic**. Keep the lighting actors.
+
+   ![A new Basic level with its lighting and Floor actor](quickstart-level.png)
+
+3. **Open the setup tools.** Choose **Tools > Build Editor**, then **Setup** in the sidebar.
+
+   ![Tools menu location and the Build Editor Setup page](quickstart-editor.png)
+
+4. **Connect the supplied controls.** Click **Use Build Editor GameMode**. The level status changes to **Build Editor Game Mode**; this supplies the camera, controls and building interface.
+
+   ![Use Build Editor GameMode button and the resulting level override](quickstart-gamemode.png)
+
+5. **Add ground if needed.** In a Basic level, delete its **Floor** actor first, then click **Add / select grass ground**. Skip this if your own terrain already provides ground.
+
+   ![Floor actor to remove when using the supplied ground, and Add / select grass ground in Setup](quickstart-ground.png)
+
+6. **Save your level.** Press <kbd>Ctrl</kbd>+<kbd>S</kbd> and save it in your project's Content folder.
+
+   ![Unreal Editor Save button above the prepared level](quickstart-save.png)
+
+7. **Start Play.** Click Unreal's green **Play** button. You should see **Build mode**, the ground and the built-in item palette.
+
+   ![Green Play button in Unreal Editor](quickstart-play.png)
+
+8. **Choose Draw room.** Click **Draw room** in the lower-left tools.
+
+   ![Draw room button in the supplied build interface](quickstart-tool.png)
+
+9. **Draw your first room.** Press and hold on the ground, drag out a rectangle, then release. A floor and surrounding walls appear. **Undo** removes the room.
+
+   ![A completed room in the new level, with the floor, walls and Undo control marked](quickstart-result.png)
+
+> [!TIP]
+> Stop Play before editing settings. The built-in catalog works immediately; create a custom catalog only when you want to change the items. If you use a two-click profile instead of the default drag controls, click the start and end corners.
+
+**No ground or dark scene?** Keep the Basic level's lights. A completely Empty level needs lighting. If your project uses Lumen software tracing, enable **Generate Mesh Distance Fields** in Project Settings and restart after changing it.
+
 ## Contents
 
-- [Editor quickstart](#editor-quickstart)
+- [Quick Start](#quick-start)
+- [Work in the editor](#work-in-the-editor)
 - [Customize the interface and build interactions](#customize-the-interface-and-build-interactions)
 - [Native component and host integration](#start-with-the-native-component)
 - [Build area, ground and floors](#build-area-ground-and-floors)
@@ -23,70 +76,113 @@
 - [Reusable profiles and scene settings](#reusable-build-profiles-and-scene-settings)
 - [Support](#support)
 
-## Editor quickstart
 
-This guide covers Build Editor 1.0 for Unreal Engine 5.4 on Windows 64-bit. Use the package matching your Unreal Engine version. Enable **Build Editor** to create catalogs and change the supplied gameplay settings without writing C++.
+## Work in the editor
 
-The quickstart starts with an installed plugin. Your game can remain a Blueprint-only project; no game C++ class or Blueprint graph is needed for the supplied setup. Optional manual installation from source requires Unreal's supported C++ build tools and compiling the plugin first.
+Use the sidebar to change tasks. Hover over a control for help. **Show guidance** or <kbd>F1</kbd> reveals extra instructions; they stay hidden by default.
 
-1. Enable **Edit > Plugins > Build Editor**, restart Unreal if requested, then open **Tools > Build Editor > Setup**.
-2. For your own first level, choose **File > New Level > Basic** so lighting is already available. Keep its lights. If using the supplied grass ground, delete the template's **Floor** actor so it does not cover the grass. A completely Empty level needs your own lighting. Projects using Lumen software tracing must enable **Generate Mesh Distance Fields** in Project Settings and restart the editor after changing it.
-3. In **Setup**, choose **Use Build Editor GameMode**, then **Add / select grass ground**. Ground is optional when your project already supplies terrain. These actions are undoable; repeating them keeps the existing Build Editor GameMode or ground. Save the level, then press **Play**. The built-in catalog supplies a working palette immediately; creating a catalog is optional. The supplied controller, camera and HUD read the active settings at play start. Existing level pieces are adopted; no sample room is created automatically.
-4. To set the permitted lot, choose **Setup > Edit Construction**. Enable **Use Build Area Bounds** and edit **Build Area Min Cell / Max Cell**, **Grid Size**, **Grid Origin** and **Floor Height** as needed. The source label identifies whether you are editing a level profile, project profile or inline defaults. Save a profile with **Save profile**; save inline values with **Save defaults**. Ground size is visual and does not change these bounds.
-5. To customize the palette, choose **Decorations > New catalog**, select a project Content folder, and save the asset. It starts with the built-in architecture and furnishings. Select an item and edit its name, group, art, dimensions, footprint, support settings or Piece Class. Use **Add**, **Duplicate**, **Remove**, **Move up** and **Move down** to organize it.
-6. Run **Validation**, fix errors, and select **Save catalog**. Return to **Setup** and choose **Use open catalog**, then save the displayed settings source. **Ctrl+Z / Ctrl+Y** undo and redo catalog edits. **Ctrl+S** saves the catalog while Decorations has focus. Play again to try your changes.
+| Page | What to do there |
+|---|---|
+| **Setup** | Connect the level, choose its catalog and open the active settings |
+| **Decorations** | Create a catalog, edit items and preview their art and finishes |
+| **Profiles** | Create, duplicate, save and assign reusable settings |
+| **Interface** | Change appearance, layout and replacement widgets |
+| **Project defaults** | Edit this project's fallback settings |
+| **Selected actor** | Inspect settings on a selected Build Editor actor, component or Blueprint |
+| **Validation** | Run checks; click an item error to open its inspector |
 
-![Setup page with GameMode, grass ground, catalog and settings actions](setup.png)
+### Set the grid and building area
 
-*Setup brings the level, catalog and settings actions together.*
+1. In **Setup**, click **Edit Construction**.
+2. Set **Grid Size** and **Floor Height**. To limit the lot, enable **Use Build Area Bounds**, then set **Build Area Min Cell / Max Cell**.
+
+![Construction settings with grid dimensions and building-area limits](editor-construction.png)
+
+3. Save the settings source: **Save defaults** for inline project settings, or **Save profile** for a profile. Start a new Play session to use the changes.
+
+**Ground size is visual.** It does not change the permitted building area.
+
+### Customize the item palette
+
+1. Open **Decorations > New catalog**. Choose a folder in your project's Content and create the catalog.
+2. Select an item. Change its **Name**, **Group**, art or placement settings in the inspector. **Duplicate** makes a copy with a new ID. Expand **Quick configure** for door, window, table/shelf and tabletop-prop starting settings.
+
+![Decorations page: New catalog, selected item, inspector and Quick configure](editor-catalog.png)
+
+3. Click **Save catalog**. Fix any errors reported by **Validation**.
+4. Return to **Setup > Use open catalog**. Save the settings source shown there: **Save defaults** or **Profiles > Save profile**. Start Play again.
+
+![Setup catalog assignment and the settings source that must also be saved](editor-assign-catalog.png)
 
 > [!IMPORTANT]
-> Change **Name** to rename an item safely. Its stable **Id** is stored in schematics. Changing or removing an ID can make existing saved builds unavailable. The window asks before changing an ID or removing an item.
+> Rename an item with **Name**. Its **Id** identifies it in saved builds; changing or removing the ID can prevent those pieces from loading. Save the catalog and its assignment separately.
 
-### Authoring window
-
-| Page | Use |
+| While editing decorations | Shortcut or control |
 |---|---|
-| **Decorations** | Search names, IDs, groups and shapes; filter by group; create catalogs; inspect and edit every item property |
-| **Setup** | Open the example, connect the supplied GameMode, add/select ground, locate level settings, assign the catalog and find the next setup step |
-| **Profiles** | Inspect, duplicate and assign reusable settings without changing the current building |
-| **Interface** | Choose the settings source, edit layout and section widgets, inspect the assigned theme, preview appearance, and save settings or theme separately |
-| **Project defaults** | Configure the catalog, grid/floors, build area, placement, drawing methods, limits, UI branding/theme/widget, camera, controls and save library |
-| **Selected actor** | Select a level actor or Blueprint asset, then choose its actor defaults or build component in the target selector to edit local settings |
-| **Validation** | Find all catalog errors and notes; click an item issue to inspect it; check project settings before saving |
+| Search name, ID, group or shape | <kbd>Ctrl</kbd>+<kbd>F</kbd>; all words must match, in any order |
+| Clear text and group filters | <kbd>Esc</kbd> |
+| Select several items | <kbd>Ctrl</kbd>-click or <kbd>Shift</kbd>-click |
+| Duplicate the selection | **Duplicate** or <kbd>Ctrl</kbd>+<kbd>D</kbd> |
+| Undo / redo | <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> |
+| Save the open catalog | **Save catalog** or <kbd>Ctrl</kbd>+<kbd>S</kbd> |
 
-The preview uses an isolated scene with Unreal's thumbnail ambient lighting and the active grid size. It shows the standard piece geometry with the item's mesh and material; stairs use the active Floor Height to match runtime proportions. It does not run custom Piece Class behavior. Invalid dimensions are made safe for preview only; the catalog still reports the original error.
+Drag the dividers to resize the list, preview and inspector. **Preview finish** shows Base or a named **Material Variant** without changing the item. The preview shows standard geometry, meshes and materials; custom **Piece Class** behavior is tested in Play.
 
-Use **Preview finish** above the viewport to inspect **Base** or a named **Material Variant**. The selector changes only the preview material, preserving its camera, geometry and inspector edit state. Renaming a finish's display name keeps the selection; changing/removing its stable ID or selecting another item returns to Base. A missing material shows a diagnostic beside the preview. Edit **Art > Material Variants** in the inspector to correct the reference, then run Validation before saving.
+### Reuse settings with profiles
 
-Use **Ctrl-click** to select several decorations or **Shift-click** for a range. The shared inspector can assign one group or material to the selection. **Duplicate** / **Ctrl+D** and **Remove** act on all selected rows as one undoable edit. Copies receive new stable IDs. Changing dimensions or names uses the single-item inspector; the selection count makes the scope of bulk actions visible. Filtering keeps the preview camera in place, and editing the same decoration preserves your preview angle.
+1. Open **Profiles**. Choose **New**, or open a supplied preset and choose **Duplicate** to make your own copy.
+2. Change the relevant settings and click **Save profile**.
+3. Choose **Use for level** for this level, or **Use for project** for the project default. Save the level after a level assignment; use **Project defaults > Save defaults** after a project assignment.
 
-Catalog assets remain separate from project settings: **Save catalog** saves the chosen data asset; **Save defaults** persists defaults in `DefaultGame.ini`. Save edited level actors or Blueprint defaults using Unreal's normal level/Blueprint workflow. Authoring is read only during play and simulation. Defaults take effect in the next play session.
+![Profiles page: create or duplicate, save, then assign to a level or project](editor-profiles.png)
 
-### Project defaults and local overrides
+**Which settings win?** Level profile → project **Default Profile** → inline **Project defaults**. Inspecting a profile does not assign it. When inline settings are read only, **Edit project profile** opens the assigned project profile. A direct component **Catalog** overrides **Default Catalog**.
 
-The reusable **Build Editor Component** keeps **Use Project Settings** disabled by default. Enable it to read the active grid, limits, snap and view defaults at play start. The source order is the level's **Build Editor Profile Source**, the project **Default Profile**, then inline **Project defaults**. **Setup > Select level settings** locates the source actor. A directly assigned component **Catalog** takes precedence over **Default Catalog**. The supplied controller's component opts in automatically.
+### Check before playing
 
-The supplied camera pawn, controller and HUD also opt in. Disable their **Use Project Settings** switch to use local camera, control or interface values. Create Blueprint subclasses through the Content Browser to retain reusable overrides, and assign those classes in your own GameMode Blueprint. The authoring window's **Selected actor** page can inspect selected Build Editor Blueprints and their native build components.
+Open **Validation > Run checks**. Fix catalog errors before saving; notes do not prevent saving. Click an item finding to open it. **Copy report** copies diagnostics for support.
 
-For a custom player/controller integration, add the **Build Editor Component** in the Blueprint editor. Its Blueprint nodes expose selection, placement, previews, room operations, deletion, undo/redo and schematic saves. Route your project's input and feedback into those nodes; the native API reference below describes their behavior.
+![Validation page with Run checks, results and Copy report](editor-validation.png)
+
+Checks cover catalogs, active settings and level configuration. They do not verify your packaged game, networking or custom gameplay.
+
+### Use your own actors and Blueprints
+
+The supplied camera, controller and HUD read the active settings at Play start. On a custom **Build Editor Component**, enable **Use Project Settings** to opt in. To keep local values on an actor or Blueprint, disable that switch and edit it through **Selected actor** or Unreal's Details panel. Save the level or Blueprint normally.
+
+For your own controls and gameplay, see the [component integration reference](#start-with-the-native-component). The supplied quickstart above needs no Blueprint graph.
 
 ## Customize the interface and build interactions
 
-The supplied interface is optional. Its appearance and gesture policies are independent of catalog art, construction records and the host's placement rules.
-
 ### Restyle the supplied layout
 
-1. Open **Tools > Build Editor**, then **Interface**. Choose **Active settings** for the level/project configuration, **Inspected profile** for the profile selected in Profiles, or **Inline project defaults**. The source label identifies the settings and theme you are editing. Inline defaults are read only while a project profile is assigned.
-2. Edit **Interface Style**, or choose **Create theme** to share an appearance asset. Adjust title/subtitle, text/panel/button/selection/error tints, text sizes, corners, button spacing and catalog dimensions. **Browser Dock** selects Bottom, Left or Right; **Side Panel Width** sets the preferred width of side layouts. Side panels scroll when space is constrained, and their catalogs use a virtualized grid. The appearance preview updates while you edit; use Play to check the full layout and replacement widgets.
-3. Use **Sections** to hide the toolbar, catalog, tools, status or extra hints. **Toolbar** switches hide individual level, wall view, history, storage, walking, interaction-mode or Build/View controls. Provide accessible replacement controls and rejection feedback for features you hide. **Save settings** persists the displayed profile or inline defaults; **Save theme** saves the assigned appearance asset separately. **Accent Color** and **Interface Scale** remain separate controls. An assigned theme takes precedence over **Interface Style**. Empty or unavailable themes use the inline style, and malformed display values are clamped for a usable interface.
-4. To change the supplied interface during play, modify the HUD's local values with **Use Project Settings** disabled, then call **Refresh Interface**. Opted-in HUDs reread project settings. Refresh cancels an unfinished gesture and closes dialogs before rebuilding; placed pieces and saved designs are preserved.
+1. Open **Interface > Active settings**. Check **Editing** to confirm which settings source you are changing. **Inspected profile** edits the profile selected in Profiles without assigning it.
+2. Expand **Interface Style** and edit its appearance. If a theme is assigned, edit **Assigned Theme > Style** instead.
 
-Themes are loaded when the interface is created. References assigned in project Build Editor settings, including the Default Profile and its owned settings, are retained automatically during cooking. References stored in cooked levels and assets follow Unreal's asset dependencies. Themes or widget classes chosen only dynamically still need your project's asset management rules, such as an **Always Cook** Primary Asset Label. Test the actual packaged game after changing these references.
+![Interface page: choose the source, expand style and check the appearance preview](editor-interface.png)
 
-![Interface page with settings source buttons, theme inspector and appearance preview](interface.png)
+| Change | Setting |
+|---|---|
+| Branding | **Title**, **Subtitle**, colors and text sizes |
+| Button and panel spacing | Padding, button height and corner radius |
+| Bottom, left or right layout | **Browser Dock**; **Side Panel Width** for side layouts |
+| Visible regions | **Sections** and **Toolbar** switches |
+| Shared appearance asset | **Create theme**; an assigned theme overrides **Interface Style** |
 
-*Choose the settings source, edit its appearance and check the preview before saving.*
+3. Click **Save settings**. If you edited a theme, click **Save theme** too. These save different assets.
+4. Start Play to check the complete layout. The editor preview shows appearance; replacement widgets and input need testing in Play.
+
+> [!NOTE]
+> Keep replacement controls for any actions you hide. Inline defaults are read only while **Default Profile** is assigned. Use **Active settings** to edit the active profile.
+
+<details>
+<summary>Appearance changes during Play and packaged-game references</summary>
+
+For a live change, edit the HUD's local values with **Use Project Settings** disabled, then call **Refresh Interface**. Opted-in HUDs reread the active settings. Refresh cancels an unfinished gesture and closes dialogs; placed pieces and saved designs remain.
+
+Themes load when the interface is created. References assigned in Build Editor settings, profiles, cooked levels and assets follow their normal cooking dependencies. Themes or widget classes chosen only dynamically need your project's asset-management rules, such as an **Always Cook** Primary Asset Label. Test the packaged game after changing those references.
+
+</details>
 
 ### Replace one section with UMG
 
@@ -325,7 +421,7 @@ The authoring window's **Setup** page connects a saved catalog to the active set
 
 Setup also shows the current recovery interval and library name. Choose **Edit Controls** for input and saved-build settings, **Edit Construction** for the grid and lot, or **Edit Placement** for snapping and gestures.
 
-![Decorations page with searchable catalog, selected item properties and a live wall preview](catalog.png)
+![Decorations page with searchable catalog, selected item properties and a live wall preview](editor-catalog.png)
 
 *Decorations keeps the item list, properties and preview in one window.*
 

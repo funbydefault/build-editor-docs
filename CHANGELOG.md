@@ -10,7 +10,7 @@ Initial public release.
 - Named local save library, Undo/Redo, optional automatic recovery and developer diagnostics.
 - One playable showcase map and 38 furnishing models with three LODs.
 
-## Documentation update — 15 October 2026
+## Documentation update : 15 October 2026
 
 - Added a screenshot-led Quick Start from plugin setup to the first room in your own level.
 - Updated the editor, catalog, profile, validation and appearance instructions for the sidebar layout.

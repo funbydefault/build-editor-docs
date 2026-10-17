@@ -672,7 +672,7 @@ The supplied controller uses `CaptureDuringMouseDown` with Game and UI input. UE
 
 ### Customize the walking visitor
 
-The supplied visitor uses an animated skeletal mesh. You can replace its appearance in **Tools > Build Editor > Project defaults > Camera**, or select your active profile in **Profiles** and choose **Camera**. The fields appear under **Walkthrough**. Save the defaults or profile and start a new play session.
+The supplied visitor uses an animated skeletal mesh. Open **Tools > Build Editor > Camera** and edit **Walkthrough**. Click **Save camera settings**, then start Play again. To inspect another profile, choose it in **Profiles > Camera settings** instead.
 
 1. Leave **Walkthrough Character Class** empty to use the supplied visitor. To supply a different character setup, create a Blueprint child of **Build Editor Walkthrough Character**, then assign that class here.
 2. Set **Walkthrough Mesh**, **Walkthrough Locomotion** and **Walkthrough Idle Animation** to change the native appearance. Empty fields keep the selected character class's defaults. Native clips must use the same skeleton asset as the effective mesh. The locomotion Blend Space's first axis is horizontal speed in centimeters per second.

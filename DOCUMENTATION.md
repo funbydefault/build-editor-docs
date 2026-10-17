@@ -37,7 +37,7 @@ Start in your own project with the matching Build Editor package installed. The 
 
 7. **Draw your first room.** Press and hold on the ground, drag out a rectangle, then release. A floor and surrounding walls appear. **Undo** removes the room.
 
-   ![A completed room in the new level, with the floor, walls and Undo control marked](quickstart-result.png)
+   ![A completed room on the Basic level floor, with the floor and walls marked](quickstart-result.png)
 
 > [!TIP]
 > Stop Play before editing settings. The built-in catalog works immediately; create a custom catalog only when you want to change the items. If you use a two-click profile instead of the default drag controls, click the start and end corners.

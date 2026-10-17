@@ -27,23 +27,15 @@ Start in your own project with the matching Build Editor package installed. The 
 
    ![Use Build Editor GameMode button and the resulting level override](quickstart-gamemode.png)
 
-5. **Add ground if needed.** In a Basic level, delete its **Floor** actor first, then click **Add / select grass ground**. Skip this if your own terrain already provides ground.
-
-   ![Floor actor to remove when using the supplied ground, and Add / select grass ground in Setup](quickstart-ground.png)
-
-6. **Save your level.** Press <kbd>Ctrl</kbd>+<kbd>S</kbd> and save it in your project's Content folder.
-
-   ![Unreal Editor Save button above the prepared level](quickstart-save.png)
-
-7. **Start Play.** Click Unreal's green **Play** button. You should see **Build mode**, the ground and the built-in item palette.
+5. **Start Play.** Click Unreal's green **Play** button. You should see **Build mode**, the Basic level's ground and the built-in item palette.
 
    ![Green Play button in Unreal Editor](quickstart-play.png)
 
-8. **Choose Draw room.** Click **Draw room** in the lower-left tools.
+6. **Choose Draw room.** Click **Draw room** in the lower-left tools.
 
    ![Draw room button in the supplied build interface](quickstart-tool.png)
 
-9. **Draw your first room.** Press and hold on the ground, drag out a rectangle, then release. A floor and surrounding walls appear. **Undo** removes the room.
+7. **Draw your first room.** Press and hold on the ground, drag out a rectangle, then release. A floor and surrounding walls appear. **Undo** removes the room.
 
    ![A completed room in the new level, with the floor, walls and Undo control marked](quickstart-result.png)
 
@@ -56,6 +48,8 @@ Start in your own project with the matching Build Editor package installed. The 
 
 - [Quick Start](#quick-start)
 - [Work in the editor](#work-in-the-editor)
+- [Keep your existing GameMode](#keep-your-existing-gamemode)
+- [Change the camera](#change-the-camera)
 - [Customize the interface and build interactions](#customize-the-interface-and-build-interactions)
 - [Native component and host integration](#start-with-the-native-component)
 - [Build area, ground and floors](#build-area-ground-and-floors)
@@ -86,6 +80,7 @@ Use the sidebar to change tasks. Hover over a control for help. **Show guidance*
 | **Setup** | Connect the level, choose its catalog and open the active settings |
 | **Decorations** | Create a catalog, edit items and preview their art and finishes |
 | **Profiles** | Create, duplicate, save and assign reusable settings |
+| **Camera** | Change the active starting view, zoom, tilt and movement speeds |
 | **Interface** | Change appearance, layout and replacement widgets |
 | **Project defaults** | Edit this project's fallback settings |
 | **Selected actor** | Inspect settings on a selected Build Editor actor, component or Blueprint |
@@ -101,6 +96,37 @@ Use the sidebar to change tasks. Hover over a control for help. **Show guidance*
 3. Save the settings source: **Save defaults** for inline project settings, or **Save profile** for a profile. Start a new Play session to use the changes.
 
 **Ground size is visual.** It does not change the permitted building area.
+
+### Keep your existing GameMode
+
+1. Open your level and choose **Setup > Add to existing GameMode**.
+2. Choose a name and folder for the new Blueprint. The tool creates a child of the level's active GameMode and assigns it to this level.
+3. Press **Play**. Save the child and level when you want to keep the setup.
+
+![Setup offers Add to existing GameMode beside the supplied GameMode action](editor-existing-gamemode.png)
+
+The child inherits your GameMode's rules and other defaults. Your original asset stays unchanged. The level override takes priority; otherwise the tool uses the map-prefix GameMode or project default. **Undo** restores the previous level override; the new Blueprint remains in the Content Browser.
+
+> [!IMPORTANT]
+> This quick setup uses Build Editor's **Player Controller Class**, **Default Pawn Class** and **HUD Class** in the child. Parent logic that expects your old controller, pawn or HUD needs adapting. To keep all three, follow [Connect an existing game](#connect-an-existing-game) and supply your own input and interface.
+
+The child uses **Camera Pawn Class** selected at creation, or the built-in camera when none is assigned. To change the pawn class later, open the child's **Class Defaults > Default Pawn Class**. The supplied camera and controller read the active profile at Play start while **Use Project Settings** is enabled.
+
+### Change the camera
+
+1. Open **Camera** in the sidebar. **Editing** identifies the active level profile, project profile or inline defaults.
+2. Expand **Camera** for starting distance, angles, target position and zoom/tilt limits. Expand **Controls** for pan, orbit, zoom and gamepad pointer speeds.
+3. Click **Save camera settings**, then start Play again.
+
+![Camera page: active settings source, camera controls and Save camera settings](editor-camera.png)
+
+This page edits the settings used by the supplied camera and controller. Looking at another profile in **Profiles** does not change its target. Your own camera must read these settings to use them. Extra smoothing, collision and pan-boundary options for the included camera are available in a camera pawn Blueprint's **Class Defaults**; see [Included top-down camera](#included-top-down-camera).
+
+### Find placed pieces in the Outliner
+
+Build Editor groups pieces under **Build Editor > Floor 0 > Walls**, **Floors**, **Objects** and the other piece types. Each floor has its own folders, including negative floors for basements. **Generated** holds the combined wall mesh, **Previews** holds temporary ghosts, and **Settings** holds new level profile sources. Optional grass ground goes in **Environment**.
+
+Folders update on placement, loading, undo/redo and floor changes. They organize the editor Outliner without attaching actors or changing their transforms. Pieces placed during Play still follow Unreal's normal Play-session lifetime; folders do not save them into the level.
 
 ### Customize the item palette
 
@@ -500,13 +526,13 @@ The supplied controller's `BeginPaint`, `ApplyPaintFinish`, `SetRoomPaintWalls`,
 | `Ctrl+Z`, `Ctrl+Y` | Undo, redo |
 | `Ctrl+S`, `Ctrl+L` | Open named save/load library |
 | `F2` | Toggle build tools and view mode |
-| `Tab` | Select the next catalog item |
+| `Tab` | Select the next catalog item in Build; return to View while walking |
 
 The toolbar separates floor/view controls from undo and saved-build actions. The bottom catalog has **Build** and **Furnish** tabs, shape and group filters, search, room/edit/finish tools and swatches. The angle appears briefly beside the placement preview while you turn an item; stair guidance also shows rise, run and width.
 
 **View mode** retains orbit, pan and zoom while hiding editing tools. Point at a visible door or window and press **E** to operate it from the orbit view. **Walk** or `F3` switches to the supplied animated mannequin, starting beside a clear exterior entrance or on a clear managed floor. Full walls and roofs remain visible while walking. The visitor's capsule collides with walls, furniture and closed doors, and its follow camera retracts around obstacles. Returning to View restores the existing orbit camera and its previous wall visibility.
 
-While walking, **WASD / arrows** or the gamepad's **left stick** move relative to the camera. **Shift / left stick press** moves faster. **Right-drag / right stick** looks; the wheel adjusts the follow distance. Face a nearby door or window and press **E / gamepad A / Open-close** to operate it. **Escape / gamepad B / View mode** returns to the orbit camera; **Build mode** returns to editing. The gamepad's **Menu** button also switches walking.
+While walking, **WASD / arrows** or the gamepad's **left stick** move relative to the camera. **Shift / left stick press** moves faster. Move the **mouse** or use the **right stick** to look; the wheel adjusts the follow distance. The cursor stays hidden and no mouse button is needed. Face a nearby door or window and press **E / gamepad A** to operate it. **Tab**, **Escape** or **gamepad B** returns to View and releases the mouse. The gamepad's **Menu** button also switches walking, and its **View** button returns to editing.
 
 Custom interfaces can call the controller's **Set Walkthrough Enabled**, **Toggle Walkthrough**, **Is Walkthrough Enabled**, **Interact With Opening** and **Get View Mode Hint** functions. Walking uses `BuildEditorWalkthroughCharacter` and the supplied `BuildEditorPawn` camera, including subclasses; a different host camera can provide its own walking integration. Disabling default input suspends hardware movement and looking while explicit mode and opening functions remain available. `FocusSelection` and the camera pawn's `ResetView` remain callable by host code; the supplied interface has no Focus or Reset toolbar buttons.
 
@@ -660,13 +686,13 @@ Keep your character's collision capsule sized for its doorways and stair clearan
 
 Build Editor includes a configurable native top-down camera rig and the supplied **Build Editor Top Down Camera Pawn**. Both are part of the same plugin. No separate camera-plugin installation or camera input assets are required. The default input objects are created at runtime; Build Editor owns the player controls and interface pointer.
 
-1. Open **Tools > Build Editor > Project defaults > Camera**. Set **Camera Pawn Class** to **Build Editor Top Down Camera Pawn**, then **Save defaults**. For a settings profile, assign that class in the profile's Camera section instead.
+1. Open **Tools > Build Editor > Camera**. Set **Camera Pawn Class** to **Build Editor Camera Pawn** (`BuildEditorTopDownCameraPawn`), then click **Save camera settings**. This saves the active profile or inline defaults shown under **Editing**.
 2. Play using **BuildEditorGameMode**, or assign that pawn in your own GameMode. Floor changes, reset, focus, pan, rotation and zoom remain available.
-3. Create a Blueprint subclass of **Build Editor Top Down Camera Pawn** to tune smoothing, camera collision and the lot pan boundary under **Build Editor > Top Down Camera**.
+3. Create a Blueprint subclass of **Build Editor Camera Pawn** to tune smoothing, camera collision and the lot pan boundary under **Class Defaults > Build Editor > Camera**. Assign your child as **Camera Pawn Class**.
 
-The default boundary allows 800 cm of extra panning around the enabled build area. Panning is unrestricted when no build-area bounds are enabled. Camera collision is off by default so building walls do not pull the view inward. **Apply Top Down Settings** applies changes made during play.
+The default boundary allows 800 cm of extra panning around the enabled build area. Panning is unrestricted when no build-area bounds are enabled. Camera collision is off by default so building walls do not pull the view inward. **Apply Build Camera Settings** applies changes made during play.
 
-The adapter keeps the rig's automatic activation disabled while Build Editor owns the view target. **Get Top Down Camera** exposes its transient rig for inspection; keep activation disabled while the adapter owns it. Use the pawn's exposed settings for ordinary building-camera customization.
+The adapter keeps the rig's automatic activation disabled while Build Editor owns the view target. **Get Build Camera** exposes its transient rig for inspection; keep activation disabled while the adapter owns it. Use the pawn's exposed settings for ordinary building-camera customization.
 
 Clear **Camera Pawn Class** to use the GameMode's configured pawn. Build Editor's built-in orbit fallback remains available for projects using their own camera. The bundled camera uses its own native module and does not replace an independently installed Top Down Camera product. Previous Build Editor Top Down Camera Pawn class references retain their module/class identity.
 

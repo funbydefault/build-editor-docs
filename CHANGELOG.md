@@ -16,6 +16,13 @@ Initial public release.
 - Updated the editor, catalog, profile, validation and appearance instructions for the sidebar layout.
 
 
+## Setup update : 17 October 2026
+
+- Shortened the Basic-level Quick Start by removing the extra ground and save steps.
+- Added an existing-GameMode setup action that creates a child with the supplied controller, camera and HUD.
+- Added a Camera page for active view settings and movement speeds.
+- Organized generated actors by floor and piece type in the editor Outliner.
+
 ## Scope
 
 Local single-player editing. Architecture uses grid-aligned walls, straight stairs and rectangular gable roofs. Touch, network authority and cloud storage are outside this version.

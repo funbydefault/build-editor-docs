@@ -11,6 +11,8 @@ Follow the [illustrated Quick Start](DOCUMENTATION.md#quick-start): enable the p
 The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools.
 
 - [Set up your own level](DOCUMENTATION.md#quick-start)
+- [Add building to an existing GameMode](DOCUMENTATION.md#keep-your-existing-gamemode)
+- [Change the camera](DOCUMENTATION.md#change-the-camera)
 - [Change the interface and placement controls](DOCUMENTATION.md#customize-the-interface-and-build-interactions)
 - [Create your own item catalog](DOCUMENTATION.md#make-a-catalog)
 - [Mouse, keyboard and gamepad controls](DOCUMENTATION.md#default-controls)

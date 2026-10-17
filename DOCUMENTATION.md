@@ -57,6 +57,7 @@ Start in your own project with the matching Build Editor package installed. The 
 - [Input and room operations](#route-input-from-your-project)
 - [Room resizing](#resize-a-room)
 - [Catalogs and material finishes](#make-a-catalog)
+- [Resize windows and doors](#resize-windows-and-doors)
 - [Default controls](#default-controls)
 - [Gamepad controls](#gamepad-controls)
 - [Game packaging](#package-your-game)
@@ -455,7 +456,7 @@ Setup also shows the current recovery interval and library name. Choose **Edit C
 
 In **Decorations**, **Quick configure** offers Door, Window, Table / shelf and Tabletop prop presets for a single selected item. They replace placement dimensions, shape and support behavior while retaining stable IDs, names, groups, meshes, materials, finishes and custom piece classes. **Ctrl+Z** restores the prior definition. Review dimensions against your own meshes after applying a preset.
 
-Create a **BuildEditorCatalog** data asset in Unreal's Content Browser. Add one row per item. Keep each **Id** unique and stable because schematics store that ID. Change **Name** freely. Set **Shape** for collision layer and fallback geometry. For objects, **Object Style** chooses native table, chair, lamp, or container geometry. Add an optional **Mesh**, **Material**, and **Piece Class** from your project. Blank mesh fields use plugin geometry. A custom furnishing mesh is fitted to its **Footprint** width/depth and **Height**, with its base at the placement height. Architecture meshes use the cell width. Native furniture also uses its catalog footprint, independently of architecture grid size.
+Create a **BuildEditorCatalog** data asset in Unreal's Content Browser. Add one row per item. Keep each **Id** unique and stable because schematics store that ID. Change **Name** freely. Set **Shape** for collision layer and fallback geometry. For objects, **Object Style** chooses native table, chair, lamp, or container geometry. Add an optional **Mesh**, **Material**, and **Piece Class** from your project. Blank mesh fields use plugin geometry. A custom furnishing mesh is fitted to its **Footprint** width/depth and **Height**, with its base at the placement height. Wall and floor meshes use the cell width; door and window meshes use the opening dimensions described below. Native furniture also uses its catalog footprint, independently of architecture grid size.
 
 The built-in catalog supplies 38 furnishing models with one shared material atlas, simple convex collision and three distance LODs. Furniture, plants, rugs, framed art, appliances, bathroom fixtures and decorative lights have distinct room groups. Existing Table, Chair, Lamp, Bucket, Jar, Keg, Pot and DeskLamp IDs remain available. The editor module adds the built-in soft asset references to cooking even when an item is absent from the showcase map. Project-owned catalogs still need their normal asset cooking configuration.
 
@@ -465,7 +466,21 @@ The built-in catalog supplies 38 furnishing models with one shared material atla
 
 An explicit ID must exist and have the matching shape; an invalid choice rejects the complete room without changing the scene. A furniture-only catalog remains valid for object placement, but Draw room reports that Floor and Wall shapes are needed. Drawing an adjacent room reuses existing shared walls, doors and windows even when the new room's chosen wall has another catalog ID. Native callers can inspect the resolution with `GetRoomItemDefinition(Shape)`.
 
-For native door/window shapes, set **Opening Width**, **Opening Height**, and **Sill Height** in centimeters. Example doors are 100 cm wide and 220 cm tall; windows are 120 cm square at a 90 cm sill. These dimensions are constrained to the item height and tile width when rendering.
+### Resize windows and doors
+
+Open **Tools > Build Editor > Decorations**, choose an editable catalog and select its Window or Door item. In **Item Inspector > Opening**, change:
+
+- **Opening Width**: the width in centimeters.
+- **Opening Height**: the height in centimeters.
+- **Sill Height**: the bottom of the opening above the floor. Use zero for a doorway.
+
+For example, set a tall window to **90 × 160 cm** with a **60 cm** sill, or a wide window to **180 × 80 cm** with a **150 cm** sill. The preview updates as you edit. Save the catalog, then restart Play to see existing placements rebuilt with the new dimensions. Duplicate the item with a new ID to offer several sizes together. Keep its ID to resize that type throughout existing builds.
+
+**Size > Height** is the enclosing wall height, usually **300 cm**. Each opening fits in one wall cell: width is limited to **Grid Size minus 20 cm**, which is **180 cm** on the default 200 cm grid. Height fits above the sill with an **8 cm** wall header. The inspector warns when the requested size needs fitting. Use a larger construction grid when your design needs wider openings.
+
+Native frames, glass, wall cutouts and selection outlines use the same fitted dimensions. Frames follow the construction **Wall Thickness**. For a project **Mesh**, its bounds are fitted to the opening width and height, centered on the wall edge at the sill; its depth fits the wall thickness plus **4 cm**. Its surrounding wall still receives a matching cutout. Supply the custom mesh's collision and use **Piece Class** for its opening behavior. The native **Flush Opening** and frame/glass material controls apply when Mesh is empty.
+
+Native roofs meet the outer wall faces; **Roof Overhang** starts beyond those faces. Native floor tops retain their chosen floor finish, while edges beneath walls continue the adjoining wall-face finish. Repainting that wall face also updates its floor edge.
 
 With **Auto Align Openings** enabled, point at an existing wall to fit a door or window to its edge and orientation. Existing doors and windows can be replaced the same way. The selected finish is retained. A miss hides the preview and asks for a wall, preventing pointer placement of a floating opening. Alignment considers only the current floor and visible wall height; use **Walls up** to target full-height walls while keeping roofs hidden. **Opening Snap Tolerance** adds a small hit margin around thin walls and is capped at one quarter of Grid Size.
 

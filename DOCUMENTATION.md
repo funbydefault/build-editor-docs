@@ -52,6 +52,7 @@ Start in your own project with the matching Build Editor package installed. The 
 - [Change the camera](#change-the-camera)
 - [Customize the interface and build interactions](#customize-the-interface-and-build-interactions)
 - [Native component and host integration](#start-with-the-native-component)
+- [Shared multiplayer building](#shared-multiplayer-building)
 - [Build area, ground and floors](#build-area-ground-and-floors)
 - [Floors and stair connections](#floors-and-stair-connections)
 - [Input and room operations](#route-input-from-your-project)
@@ -69,6 +70,7 @@ Start in your own project with the matching Build Editor package installed. The 
 - [Included top-down camera](#included-top-down-camera)
 - [Performance and edit reliability](#performance-and-edit-reliability)
 - [Reusable profiles and scene settings](#reusable-build-profiles-and-scene-settings)
+- [Scene music and ambience](#scene-music-and-ambience)
 - [Support](#support)
 
 
@@ -110,6 +112,8 @@ The child inherits your GameMode's rules and other defaults. Your original asset
 
 > [!IMPORTANT]
 > This quick setup uses Build Editor's **Player Controller Class**, **Default Pawn Class** and **HUD Class** in the child. Parent logic that expects your old controller, pawn or HUD needs adapting. To keep all three, follow [Connect an existing game](#connect-an-existing-game) and supply your own input and interface.
+
+For shared building, use the supplied **Build Editor Player Controller** or a subclass. The setup also adds one **Build Editor Shared Session** actor to the level; see [Shared multiplayer building](#shared-multiplayer-building).
 
 The child uses **Camera Pawn Class** selected at creation, or the built-in camera when none is assigned. To change the pawn class later, open the child's **Class Defaults > Default Pawn Class**. The supplied camera and controller read the active profile at Play start while **Use Project Settings** is enabled.
 
@@ -304,7 +308,7 @@ Set these properties on the component:
 
 The component spawns `ABuildEditorPiece` actors. It also adopts placed piece actors already in the map when play starts, aligning them to their saved grid record and applying the current catalog's appearance. A project can subclass `ABuildEditorPiece` and assign that class to a catalog item for door interaction, lights, or other behavior.
 
-In custom piece classes, start placement effects and gameplay registration in **On Placement Committed**. The record is initialized before construction and BeginPlay, but **Is Placement Committed** remains false while an edit is being prepared. The event runs once for each accepted actor instance, including actors created by undo or load. Construction and BeginPlay should tolerate an uncommitted actor; arbitrary external side effects from those functions cannot be undone by the build component. Temporary previews use the native base class with catalog visuals and never call this event.
+In custom piece classes, start placement effects and gameplay registration in **On Placement Committed**. The record is initialized before construction and BeginPlay, but **Is Placement Committed** remains false while an edit is being prepared. The event runs once for each accepted actor instance, including actors created by undo or load. Construction and BeginPlay should tolerate an uncommitted actor; arbitrary external side effects from those functions cannot be undone by the build component. Temporary previews use the native base class with catalog visuals and never call this event. Shared multiplayer creates separate local visual actors; see [Keep presentation local](#keep-presentation-local) before adding gameplay to a custom piece.
 
 ### Connect an existing game
 
@@ -314,7 +318,7 @@ In custom piece classes, start placement effects and gameplay registration in **
 4. Bind **On Build Changed** to update your save dirty state, inventory or custom UI. It runs once after a successful transaction and after undo state changes. Modified identities appear in both arrays, before and after the edit. Distinguish Place/Duplicate from Move/Repaint/Undo/Redo/Load/Import when accounting for costs. The actor's **On Placement Committed** event is not a purchase event.
 5. Call **Create Schematic** to obtain validated records plus their grid size, floor height and format. Store those values in your existing save system. Restore them with **Apply Schematic**, choosing whether to retain the previous scene as an undo step. Failed validation, project vetoes and failed spawning preserve the existing build. A successful import with history disabled clears both history stacks.
 
-Callbacks may inspect or export the accepted state; nested editing calls are rejected. Schedule further changes after the callback returns. These are local single-player hooks, not a replication or inventory implementation. A project must define how its economy reconciles undo, refunds and loading.
+Callbacks may inspect or export the accepted state; nested editing calls are rejected. Schedule further changes after the callback returns. This component-only setup supports standalone editing with your own controller. For shared authority, use the supplied controller and [shared session](#shared-multiplayer-building). Your game defines inventory accounting, Undo refunds and loading rules.
 
 Enable **Check World Obstacles** on the component when level geometry should block new pieces. Choose a project collision channel to distinguish blockers from terrain or decoration. The check uses conservative item boxes and a small contact allowance, ignores this component's managed pieces and previews, and names the first blocking actor. Cached placement previews also use this check, including architecture gestures and moved/copied furnishing groups with their attached decorations. Confirmation checks again. Changes to the enabled flag or collision channel invalidate preview caches; call **Invalidate Placement Preview** after moving an external obstacle while the pointer remains stationary. Repaint, erase and history restoration skip this physical check. Exact custom-mesh shapes, ground suitability and ownership rules belong in the project's validator. These settings are component overrides available through **Selected actor**.
 
@@ -329,6 +333,39 @@ Your own debug UI can call **Build Editor Diagnostics > Collect** with a world o
 A ready preview checks construction geometry and enabled world obstacles. Project permissions/budgets still run when confirming the edit; explicit room resize preflight also runs them. Diagnostics do not prove that assets will cook, custom Blueprint behavior will work, or networking is implemented.
 
 Keep one **Build Editor Profile Source** per world, including loaded sublevels. Its **Validate** node checks profile ownership, valid scenes, the active scene/profile match and duplicate save/recovery namespaces. A different **Library Id** is required for each scene when the platform save backend does not isolate **Save User Index** values. Validation checks that backend capability. Invalid scene switches preserve the existing build, settings and working floor. Switching to the already active scene rejects a mismatched source/profile rather than claiming to apply it.
+
+## Shared multiplayer building
+
+The shared session keeps one construction on the server. Players use their own camera, tools, previews and interface. Building edits, painting, door/window state and scene changes are shared. Each connection has its own Undo/Redo history.
+
+1. Install the same Build Editor version and game assets on the server and clients. Set up the supplied controls through **Tools > Build Editor > Setup**. **Add to existing GameMode** creates a child of your current GameMode and adds the shared-session actor to the level. It uses the supplied controller, camera and HUD; merge your existing controller behavior into a subclass when needed.
+2. Keep exactly one **Build Editor Shared Session** actor in a custom GameMode level. The supplied **Build Editor GameMode** creates one automatically in network play when none is placed. A placed session remains idle in standalone play. Leave **Profile** empty to use the level or project profile, or assign a saved profile asset included in the game.
+3. Start a normal Unreal listen-server or dedicated-server session. The plugin supplies building synchronization; your game supplies its hosting/joining flow. Do not add a second editor map for multiplayer. Verify your own project in separate packaged server and client processes.
+4. Wait for the controller's **Is Shared Build Ready** before enabling custom edit buttons. Existing component placement/edit nodes queue shared requests. A true return means queued. **On Shared Request Result** reports server acceptance or rejection. **On Shared Build Synchronized** signals that the approved revision has been applied locally, including edits by another player.
+
+The server merges edits to separate pieces. A conflicting request leaves the current build unchanged and tells the player to try again. Personal Undo cannot overwrite somebody else's later changes. History belongs to the connection and is cleared on reconnect or scene switch.
+
+### Permissions and shared saves
+
+Create a Blueprint child of **Build Editor Shared Session**, place it once in the level, and override **Can Player Edit**. Inspect the requesting player and the actual **Added** and **Removed** records for ownership, zones and budgets. Keep this check read only: later geometry checks can still reject the request.
+
+Apply accepted gameplay consequences from the authoritative **Build > On Build Changed** event. During that synchronous callback, **Get Current Edit Player** on the session identifies the requesting controller. It is empty after the edit returns and for direct server edits. Define how your game handles Undo, Redo, refunds and imports.
+
+Disable **Allow Player Edits** to make the construction read only for players. **Allow Scene Changes** controls the shared scene button. A scene switch affects everyone and exits active walkthrough visitors. Server game logic can call **Activate Shared Scene** even when player scene changes are disabled.
+
+Player Load/Import replacement is disabled by default with **Allow Client Replace Build**. Local library saves remain files on that player's computer. For server persistence, export from the session's authoritative **Build** component with **Create Schematic**, store the data using your game's persistence, then restore it there with **Apply Schematic**. Cloud storage and persistent player identity are game responsibilities. Automatic local draft recovery is disabled in shared play.
+
+The defaults allow 1,024 pieces, at most 256 added plus removed records in one edit, and five player requests per second with a burst of two. Larger atomic actions are rejected intact. Settings allow up to 4,096 pieces and 512 records per edit; these are validation limits, not a frame-rate guarantee. Snapshots send 32 records per acknowledged chunk. Profile and catalog assets must be cooked into every build.
+
+### Keep presentation local
+
+Bind camera, input and UMG to the owning controller. Floor selection, wall view and tool selection stay local. The server retains full collision while players choose different wall views. Home/Sci-fi switches synchronize scene records and profiles; each client applies that scene's ground, music and ambience. A dedicated server does not play scene audio.
+
+Custom piece construction and BeginPlay can run on each local view. **Is Shared Presentation** identifies these generated visual actors before construction. Use **On Placement Committed** for piece gameplay: shared mirrors receive their committed flag and decorative lights without this gameplay event. Prefer the authoritative session Build events for replicated game systems.
+
+An incoming build revision cancels unfinished local placement gestures. Finish or restart the action against the updated construction. Scene changes reset each player's active floor and camera to that scene's defaults.
+
+Touch, split-screen, seamless travel, matchmaking, hosting services, cloud saves and cross-platform online services are outside the supplied integration. Use matching saved scene/profile assets on server and clients. Your game must handle travel and session replacement before offering those flows.
 
 ## Build area, ground and floors
 
@@ -630,11 +667,11 @@ Format 4 introduced arbitrary furnishing angles, retained in format 6. A record 
 
 Direct-slot and named-library loaders accept formats 1 through 6. Formats 1 through 3 set `YawOffset` to zero, preserving their original quarter-turn orientation. Formats 1 and 2 use the base finish; formats 3 and 4 retain whole-piece finish IDs. Formats 1 through 4 restore both wall faces through the original inherited appearance. Missing old placement identities are assigned during validated loading. Earlier plugin versions cannot read format 6. Back up saves before changing catalog/finish IDs or dimensions. Unknown IDs, overlaps, mismatched grid settings, unsupported versions and excessive piece counts fail before changing the scene. Records are relative to Grid Origin, allowing the host to restore a design at its chosen origin.
 
-The save format is local and single-player. Hosts can store **Create Schematic** data or `GetRecords()` plus the grid/floor settings inside their own persistence, then use **Apply Schematic** to restore it. Projects needing cloud saves or multiplayer must provide storage transport, authority and conflict rules.
+The library stores files on the local computer. For a shared game, save authoritative **Create Schematic** data from the session's **Build** component and restore it there with **Apply Schematic**. Your game provides persistent storage and player identity. Player Load/Import replacement is disabled by default in shared sessions; see [permissions and shared saves](#permissions-and-shared-saves).
 
 ### Automatic draft recovery
 
-The supplied controller can protect changed builds with an automatic draft. In **Project defaults > Controls**, enable **Enable Auto Recovery** and set **Auto Recovery Interval** (60 seconds by default, configurable from 10 to 3600 seconds). Reusable defaults leave this feature disabled. The controller uses **Library Id** as the recovery namespace and **Save User Index** as the platform user. Choose distinct library IDs for worlds or profiles whose drafts should remain separate; some desktop platforms ignore the user index.
+The supplied controller can protect changed standalone builds with an automatic draft. In **Project defaults > Controls**, enable **Enable Auto Recovery** and set **Auto Recovery Interval** (60 seconds by default, configurable from 10 to 3600 seconds). Reusable defaults leave this feature disabled. Shared play disables automatic local drafts; save the authoritative session through your game instead. The controller uses **Library Id** as the recovery namespace and **Save User Index** as the platform user. Choose distinct library IDs for worlds or profiles whose drafts should remain separate; some desktop platforms ignore the user index.
 
 **Load** opens the build library, including its **Automatic draft** section. It shows the recorded time, piece count and recovery status. **Restore draft** imports it as an undoable change through the same catalog, grid and host-rule checks as other imports. **Discard draft...** requires confirmation and preserves the open scene and named builds. An existing or unreadable startup draft pauses automatic replacement until the player acts; startup never silently loads it.
 
@@ -744,6 +781,12 @@ Create **Build Editor Profile** and **Build Editor Example Scene** data assets t
 With more than one scene, the supplied toolbar shows **Switch to [scene name]**. Mouse and gamepad can activate it. **Interface Style > Toolbar > Show Scene Control** hides this control when your game supplies its own menu. Custom controls call the source's `ActivateScene(Index, OutMessage)`. Return to Build mode and close dialogs before switching. The source retains each scene's session edits, clears Undo history on a successful change and applies that profile's catalog, controls, theme and camera reset settings. Rejected imports preserve the current construction, settings and ground appearance. Save edits explicitly before leaving the game; session retention does not persist across restarts.
 
 For changing ground surfaces, assign the source's **Scene Ground** to the level's optional **Build Editor Environment** actor. In every scene that should change that actor, enable **Override Ground**, choose **Ground Material** and set **Ground Tint**. The tint feeds the material's `GrassColor` parameter; custom materials can ignore it. Bind **On Scene Activated** for your game's lighting, sky, audio or other world dressing. It runs after successful activation and initial scene startup, and does not run for a rejected switch. Scene loading uses the supplied controller and current camera pawn class; changing **Camera Pawn Class** requires a new play session. To replace input or interface behavior, use the controller's pointer/cell APIs and the UMG section or complete-layout replacements described above.
+
+### Scene music and ambience
+
+Open a **Build Editor Example Scene** asset and expand **Audio**. Assign optional **Music** and **Ambience** sounds and set each volume from zero to one. Use looping Sound Waves or looping Sound Cues for continuous playback. An empty sound or zero volume silences that layer.
+
+Call **Set Scene Audio Enabled** on the level's **Build Editor Profile Source** to mute or restore both local layers. Scene changes fade into their assigned sounds. Bind **On Scene Activated** for additional project effects. Dedicated servers do not play this audio.
 
 ## Support
 

@@ -12,6 +12,7 @@ The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in 
 
 - [Set up your own level](DOCUMENTATION.md#quick-start)
 - [Add building to an existing GameMode](DOCUMENTATION.md#keep-your-existing-gamemode)
+- [Add shared multiplayer building](DOCUMENTATION.md#shared-multiplayer-building)
 - [Change the camera](DOCUMENTATION.md#change-the-camera)
 - [Change the interface and placement controls](DOCUMENTATION.md#customize-the-interface-and-build-interactions)
 - [Create your own item catalog](DOCUMENTATION.md#make-a-catalog)
@@ -20,11 +21,11 @@ The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in 
 - [Save builds and recover work](DOCUMENTATION.md#schematic-saves)
 - [Version notes](CHANGELOG.md)
 
-The included map offers Home and Sci-fi scenes through one scene button. Each scene uses its own catalog, materials, interface theme and camera settings. Use the same profile and scene assets to offer your own building styles.
+The included map offers Home and Sci-fi scenes through one scene button. Each scene uses its own catalog, materials, interface theme, camera settings and audio. Use the same profile and scene assets to offer your own building styles.
 
 ## Scope
 
-Local single-player building with grid-aligned walls, straight stairs and rectangular gable roofs. Touch controls, network authority and cloud storage are outside version 1.0.
+Standalone and shared multiplayer building with grid-aligned walls, straight stairs and rectangular gable roofs. Shared sessions use server-approved edits, personal Undo/Redo and independent player cameras. Your game supplies hosting and joining. Touch, split-screen and cloud storage are outside version 1.0.
 
 ## Support
 

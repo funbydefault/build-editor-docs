@@ -37,9 +37,16 @@ Initial public release.
 - Aligned custom wall meshes to wall edges and configured thickness. Catalog IDs no longer change mesh sizing.
 - Clarified the built-in Procedural Mesh Component dependency and its experimental API status in UE 5.4.
 
+## Shared building and audio update : 18 October 2026
+
+- Added server-approved shared construction for listen and dedicated servers, including late joining, reconnect, independent player cameras and personal Undo/Redo.
+- Added Blueprint permission checks, edit limits and access to the player responsible for an accepted server edit.
+- Shared Home/Sci-fi switches preserve each scene's edits and update every player's profile and presentation.
+- Added optional scene music and ambience with local volume and mute controls.
+
 ## Scope
 
-Local single-player editing. Architecture uses grid-aligned walls, straight stairs and rectangular gable roofs. Touch, network authority and cloud storage are outside this version.
+Standalone and shared multiplayer editing. Architecture uses grid-aligned walls, straight stairs and rectangular gable roofs. Your game supplies hosting, joining and persistent storage. Touch, split-screen and cloud storage are outside this version.
 
 ## Existing saved designs
 

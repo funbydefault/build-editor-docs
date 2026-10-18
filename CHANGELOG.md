@@ -33,6 +33,8 @@ Initial public release.
 ## Maintenance update : 18 October 2026
 
 - Removed unreachable duplicate opening geometry code. Existing save readers and serialized asset compatibility remain available.
+- Removed an unused background material and fixed direct header includes required by clean game builds.
+- Clarified the built-in Procedural Mesh Component dependency and its experimental API status in UE 5.4.
 
 ## Scope
 

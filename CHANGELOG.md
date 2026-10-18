@@ -8,7 +8,7 @@ Initial public release.
 - Mouse/keyboard and configurable gamepad controls, including interface pointing and an on-screen text keyboard.
 - Editor setup, catalog authoring, reusable profiles, interface themes and UMG replacements.
 - Named local save library, Undo/Redo, optional automatic recovery and developer diagnostics.
-- One playable showcase map and 38 furnishing models with three LODs.
+- One playable showcase map with switchable Home and Sci-fi scenes, 38 home furnishing models and 12 station equipment models with three LODs.
 
 ## Documentation update : 15 October 2026
 
@@ -22,6 +22,17 @@ Initial public release.
 - Added an existing-GameMode setup action that creates a child with the supplied controller, camera and HUD.
 - Added a Camera page for active view settings and movement speeds.
 - Organized generated actors by floor and piece type in the editor Outliner.
+
+## Scene and alignment update : 17 October 2026
+
+- Added a complete Sci-fi conversion in the same map, with its own catalog, materials, decorations, interface and camera profile. The scene button preserves each scene's edits during Play.
+- Exposed native frame, glass and hardware styling, including flush openings and roof surface materials.
+- Aligned gables, roof edges, ceilings and wall ends with the configured wall thickness.
+- Unified opening dimensions across windows, frames, glass, wall cutouts and selection outlines. Custom opening meshes fit the configured width, height and sill.
+
+## Maintenance update : 18 October 2026
+
+- Removed unreachable duplicate opening geometry code. Existing save readers and serialized asset compatibility remain available.
 
 ## Scope
 

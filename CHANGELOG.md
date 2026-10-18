@@ -34,6 +34,7 @@ Initial public release.
 
 - Removed unreachable duplicate opening geometry code. Existing save readers and serialized asset compatibility remain available.
 - Removed an unused background material and fixed direct header includes required by clean game builds.
+- Aligned custom wall meshes to wall edges and configured thickness. Catalog IDs no longer change mesh sizing.
 - Clarified the built-in Procedural Mesh Component dependency and its experimental API status in UE 5.4.
 
 ## Scope

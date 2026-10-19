@@ -51,3 +51,9 @@ Standalone and shared editing in listen-server games. Architecture uses grid-ali
 ## Existing saved designs
 
 The current schematic format is 6. Readers accept formats 1-6. Older formats receive default closed opening states and inherit the appearances available in their original format. Earlier plugin builds cannot read format 6. Back up saves before changing stable catalog IDs, dimensions or grid settings. Unrecognized or incompatible designs are rejected before changing the scene.
+
+## Reliability update : 19 October 2026
+
+- Corrected roof-only piece lookups and catalog cycling for zero or large direction values.
+- Clarified blocked-door feedback while preserving safe closing around the walking visitor.
+- Declared the editor animation dependency needed to edit and cook the supplied visitor when default engine plugins are disabled.

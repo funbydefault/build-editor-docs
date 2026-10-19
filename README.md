@@ -8,7 +8,7 @@ Follow the [illustrated Quick Start](DOCUMENTATION.md#quick-start): enable the p
 
 [![Build Editor Setup page with the main setup controls marked](quickstart-editor.png)](DOCUMENTATION.md#quick-start)
 
-The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools.
+The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools. Built-in dependencies are enabled automatically, including editor animation support for the supplied visitor.
 
 - [Set up your own level](DOCUMENTATION.md#quick-start)
 - [Add building to an existing GameMode](DOCUMENTATION.md#keep-your-existing-gamemode)

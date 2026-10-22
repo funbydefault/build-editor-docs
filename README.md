@@ -2,6 +2,10 @@
 
 Build Editor adds in-game building and furnishing to Unreal Engine projects. Players can draw rooms, walls and floors, place doors and windows, connect levels with straight stairs, add roofs, and decorate with furniture.
 
+## Try the free demo
+
+[Download the Windows demo](https://funbydefault.itch.io/build-editor-demo). Build and furnish a home or a sci-fi station without installing Unreal Engine. The download is the playable example; the paid plugin and Unreal editor tools are separate.
+
 ## Quick Start
 
 Follow the [illustrated Quick Start](DOCUMENTATION.md#quick-start): enable the plugin, connect the supplied controls in **Tools > Build Editor > Setup**, then press **Play** and draw a room. Each step shows the actual editor control and expected result.

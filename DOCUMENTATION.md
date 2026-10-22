@@ -2,6 +2,8 @@
 
 Unreal Engine 5.4 · Windows 64-bit
 
+[Try the free Windows demo](https://funbydefault.itch.io/build-editor-demo) before installing the plugin. The demo contains the playable example; the paid plugin and Unreal editor tools are separate.
+
 <a id="editor-quickstart"></a>
 
 ## Quick Start

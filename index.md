@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Build Editor
 ---
 
 <style>
@@ -14,4 +15,5 @@ html { scroll-padding-top: 24px; }
 @media (max-width: 600px) { .markdown-body { font-size: 16px; } }
 </style>
 
-{% include_relative DOCUMENTATION.md %}
+{% capture guide %}{% include_relative DOCUMENTATION.md %}{% endcapture %}
+{{ guide | replace: '> [!NOTE]', '> **Note**' | replace: '> [!TIP]', '> **Tip**' | replace: '> [!IMPORTANT]', '> **Important**' | replace: '> [!WARNING]', '> **Warning**' }}

@@ -793,3 +793,6 @@ Call **Set Scene Audio Enabled** on the level's **Build Editor Profile Source** 
 ## Support
 
 Contact [funbydefault.dev@gmail.com](mailto:funbydefault.dev@gmail.com). Include your Build Editor version, Unreal Engine version, the action that failed and any diagnostic message. Keep private game data out of screenshots and shared reports.
+
+> [!TIP]
+> If Build Editor helps your project, consider an honest review on the **[Build Editor Fab listing](https://www.fab.com/listings/e36f0375-4304-45ae-af3a-a01798563b2f)**.

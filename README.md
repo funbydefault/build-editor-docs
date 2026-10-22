@@ -8,21 +8,21 @@ Build Editor adds in-game building and furnishing to Unreal Engine projects. Pla
 
 ## Quick Start
 
-Follow the [illustrated Quick Start](DOCUMENTATION.md#quick-start): enable the plugin, connect the supplied controls in **Tools > Build Editor > Setup**, then press **Play** and draw a room. Each step shows the actual editor control and expected result.
+Follow the [Documentation](https://funbydefault.github.io/build-editor-docs/#quick-start): enable the plugin, connect the supplied controls in **Tools > Build Editor > Setup**, then press **Play** and draw a room. Each step shows the actual editor control and expected result.
 
-[![Build Editor Setup page with the main setup controls marked](quickstart-editor.png)](DOCUMENTATION.md#quick-start)
+[![Build Editor Setup page with the main setup controls marked](quickstart-editor.png)](https://funbydefault.github.io/build-editor-docs/#quick-start)
 
 The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools. Built-in dependencies are enabled automatically, including editor animation support for the supplied visitor.
 
-- [Set up your own level](DOCUMENTATION.md#quick-start)
-- [Add building to an existing GameMode](DOCUMENTATION.md#keep-your-existing-gamemode)
-- [Add shared multiplayer building](DOCUMENTATION.md#shared-multiplayer-building)
-- [Change the camera](DOCUMENTATION.md#change-the-camera)
-- [Change the interface and placement controls](DOCUMENTATION.md#customize-the-interface-and-build-interactions)
-- [Create your own item catalog](DOCUMENTATION.md#make-a-catalog)
-- [Resize windows and doors](DOCUMENTATION.md#resize-windows-and-doors)
-- [Mouse, keyboard and gamepad controls](DOCUMENTATION.md#default-controls)
-- [Save builds and recover work](DOCUMENTATION.md#schematic-saves)
+- [Set up your own level](https://funbydefault.github.io/build-editor-docs/#quick-start)
+- [Add building to an existing GameMode](https://funbydefault.github.io/build-editor-docs/#keep-your-existing-gamemode)
+- [Add shared multiplayer building](https://funbydefault.github.io/build-editor-docs/#shared-multiplayer-building)
+- [Change the camera](https://funbydefault.github.io/build-editor-docs/#change-the-camera)
+- [Change the interface and placement controls](https://funbydefault.github.io/build-editor-docs/#customize-the-interface-and-build-interactions)
+- [Create your own item catalog](https://funbydefault.github.io/build-editor-docs/#make-a-catalog)
+- [Resize windows and doors](https://funbydefault.github.io/build-editor-docs/#resize-windows-and-doors)
+- [Mouse, keyboard and gamepad controls](https://funbydefault.github.io/build-editor-docs/#default-controls)
+- [Save builds and recover work](https://funbydefault.github.io/build-editor-docs/#schematic-saves)
 - [Version notes](CHANGELOG.md)
 
 The included map offers Home and Sci-fi scenes through one scene button. Each scene uses its own catalog, materials, interface theme, camera settings and audio. Use the same profile and scene assets to offer your own building styles.

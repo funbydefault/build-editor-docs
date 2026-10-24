@@ -12,7 +12,7 @@ Follow the [Documentation](https://funbydefault.github.io/build-editor-docs/#qui
 
 [![Build Editor Setup page with the main setup controls marked](quickstart-editor.png)](https://funbydefault.github.io/build-editor-docs/#quick-start)
 
-The guide uses Unreal Engine 5.4 on Windows 64-bit. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools. Built-in dependencies are enabled automatically, including editor animation support for the supplied visitor.
+Supports Unreal Engine 5.4–5.8 on Windows 64-bit. Guide screenshots use UE 5.4. The supplied setup works in a Blueprint-only game. A source-only installation needs Unreal's supported C++ build tools. Built-in dependencies are enabled automatically, including editor animation support for the supplied visitor.
 
 - [Set up your own level](https://funbydefault.github.io/build-editor-docs/#quick-start)
 - [Add building to an existing GameMode](https://funbydefault.github.io/build-editor-docs/#keep-your-existing-gamemode)

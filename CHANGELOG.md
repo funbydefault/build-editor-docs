@@ -58,3 +58,9 @@ The current schematic format is 6. Readers accept formats 1-6. Older formats rec
 - Clarified blocked-door feedback while preserving safe closing around the walking visitor.
 - Kept the fallback camera above the starting floor for short custom camera distances.
 - Declared the editor animation dependencies needed to edit and cook the supplied visitor, including Control Rig startup support, when default engine plugins are disabled.
+
+## Compatibility and authoring update : 24 October 2026
+
+- Supports Unreal Engine 5.4–5.8 on Windows 64-bit.
+- Removed an extra class picker when creating profiles, catalogs and interface themes.
+- Fixed a catalog-name editing error.
